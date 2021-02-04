@@ -2,10 +2,17 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../models/User"); // With mongoose, you access the collection through the model.
+const mongoQuery = require("../logic/query");
 
 // GET all users
 router.get("/", function (req, res, next) {
-  User.find({}, (err, data) => {
+  // If query is not empty, create a mongo query
+  if (JSON.stringify(req.query) !== "{}") {
+    var query = mongoQuery(User, req.query);
+    query.name = { $regex: query.name, $options: "i" };
+  }
+
+  User.find(mongoQuery(User, req.query), (err, data) => {
     if (err) console.log(err);
     res.json(data);
   });
@@ -40,6 +47,18 @@ router.delete("/:id", (req, res) => {
     if (err) console.log(err);
     res.json(data);
   });
+});
+
+// PUT user update by id
+router.put("/:id", (req, res) => {
+  User.updateOne(
+    { _id: req.params.id },
+    { $set: { name: req.body.name, age: req.body.age } },
+    (err, data) => {
+      if (err) console.log(err);
+      res.json(data);
+    }
+  );
 });
 
 module.exports = router;
