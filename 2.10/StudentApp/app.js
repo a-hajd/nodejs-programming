@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+const courseRouter = require("./routes/courses.js");
 const studentRouter = require("./routes/students");
 
 const app = express();
@@ -19,5 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/students", studentRouter);
+app.use("/courses", courseRouter);
 
 module.exports = app;
