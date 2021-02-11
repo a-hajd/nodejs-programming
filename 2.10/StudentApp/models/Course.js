@@ -6,12 +6,10 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   teacher: {
-    name: {
-      type: String,
-      required: true,
-    },
+    type: String,
+    required: true,
   },
 });
 
 const Course = mongoose.model("Course", courseSchema);
-module.exports = Course;
+module.exports = { model: Course, schema: courseSchema };
