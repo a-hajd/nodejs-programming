@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const Course = require("../models/Course");
+const Course = require("../models/Course").model;
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
